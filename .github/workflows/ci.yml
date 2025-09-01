@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (if package.json exists)
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps & test
+        if: hashFiles('package.json') != ''
+        run: |
+          npm ci || npm install
+          npm test --if-present
+
+      - name: Build Docker image (if Dockerfile exists)
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          docker build -t ci-build-test:latest .

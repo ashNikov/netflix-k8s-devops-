@@ -1,0 +1,4 @@
+name: Deploy to AWS App Runner
+
+on:
+  workflow_dispatch:

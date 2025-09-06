@@ -1,12 +1,56 @@
-<!doctype html><html><head>
-<meta charset="utf-8"/><title>Netflix Web</title>
-<style>body{margin:0;font-family:system-ui;-apple-system,Segoe UI,Roboto}
-.hero{display:flex;align-items:center;justify-content:center;height:100vh;background:#141414;color:#fff;text-align:center}
-.btn{padding:12px 20px;border:0;border-radius:8px;background:#e50914;color:#fff;font-weight:600;cursor:pointer}
-</style></head><body>
-<div class="hero"><div>
-<h1>Netflix App 🚀 Live via CI/CD</h1>
-<p>If you can see this, your cluster + ingress works ✅</p>
-<button class="btn" onclick="alert('Play!')">Play</button>
-</div></div>
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Netflix App — Live via CI/CD</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand">Netflix App <span class="badge">DevOps Lab</span></div>
+      <div>
+        <a href="#">Home</a>
+        <a href="#">Trending</a>
+        <a href="#">My List</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <h1>Netflix App 🚀 Live via CI/CD</h1>
+      <p>If you can see this, AWS App Runner + ECR + GitHub Actions are working.</p>
+      <a class="btn play" href="javascript:void(0)">Play</a>
+    </section>
+
+    <section>
+      <h2>Featured</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://picsum.photos/seed/film1/600/400" alt="">
+          <h3>Into the Cluster</h3>
+          <p class="muted">K8s • Ingress • TLS</p>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/film2/600/400" alt="">
+          <h3>Pipeline Reloaded</h3>
+          <p class="muted">CI/CD • App Runner</p>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/film3/600/400" alt="">
+          <h3>Secrets Unleashed</h3>
+          <p class="muted">IAM • ECR</p>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/film4/600/400" alt="">
+          <h3>FootyIQ Teaser</h3>
+          <p class="muted">Next up… ⚽</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">Powered by <strong>ashNikov</strong> • Deployed on AWS App Runner</div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

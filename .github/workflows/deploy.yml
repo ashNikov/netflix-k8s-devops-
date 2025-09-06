@@ -1,4 +1,47 @@
 name: Deploy to AWS App Runner
 
 on:
+  push:
+    branches: ["main", "dev"]
   workflow_dispatch:
+
+env:
+  AWS_REGION: eu-west-1
+  ECR_REPOSITORY: netflix-web
+  IMAGE_TAG: ${{ github.sha }}
+  AWS_ACCOUNT_ID: 016615473382
+  APP_RUNNER_SERVICE_ARN: arn:aws:apprunner:eu-west-1:016615473382:service/netflix-web/2759119666174abab1e8c7954ddf232c
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+      - name: Build Docker image (web)
+        run: docker build -t $ECR_REPOSITORY:$IMAGE_TAG ./web
+
+      - name: Tag image
+        run: docker tag $ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Push image to ECR
+        run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Trigger App Runner deployment
+        run: aws apprunner start-deployment --service-arn $APP_RUNNER_SERVICE_ARN
